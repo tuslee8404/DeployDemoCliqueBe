@@ -1,29 +1,19 @@
 // src/services/email.service.ts
-import nodemailer from 'nodemailer'
+import { Resend } from 'resend'
 import { envConfig } from '~/constants/config'
 
-const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST,
-  port: Number(process.env.EMAIL_PORT),
-  secure: false, // dùng STARTTLS với port 587
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASSWORD
-  },
-  tls: {
-    rejectUnauthorized: false // 👈 Thêm dòng này để bỏ qua lỗi chứng chỉ tự ký
-  }
-})
+const resend = new Resend(envConfig.resendApiKey)
 
 export const sendOTPEmail = async (email: string, otp: string, purpose: 'register' | 'reset_password') => {
   const subject = purpose === 'register' ? 'Xác nhận đăng ký tài khoản' : 'Đặt lại mật khẩu'
   const title = purpose === 'register' ? 'Xác nhận đăng ký' : 'Đặt lại mật khẩu'
 
-  const mailOptions = {
-    from: envConfig.emailFrom || envConfig.emailUser,
-    to: email,
-    subject: subject,
-    html: `
+  try {
+    await resend.emails.send({
+      from: envConfig.emailFrom || 'onboarding@resend.dev',
+      to: email,
+      subject: subject,
+      html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
           <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
             <h1 style="color: white; margin: 0; font-size: 24px;">${title}</h1>
@@ -65,13 +55,10 @@ export const sendOTPEmail = async (email: string, otp: string, purpose: 'registe
           </div>
         </div>
       `
-  }
-
-  try {
-    await transporter.sendMail(mailOptions)
-    //console.log('✅ Email sent to:', email)
+    })
+    //console.log('✅ Email sent via Resend to:', email)
   } catch (error) {
-    console.error('❌ Email send error:', error)
+    console.error('❌ Resend email send error:', error)
     throw new Error('Failed to send OTP email')
   }
 }

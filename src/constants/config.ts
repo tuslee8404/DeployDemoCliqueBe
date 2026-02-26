@@ -14,5 +14,6 @@ export const envConfig = {
   emailPort: process.env.EMAIL_PORT,
   emailUser: process.env.EMAIL_USER,
   emailPassword: process.env.EMAIL_PASSWORD,
-  emailFrom: process.env.EMAIL_FROM
+  emailFrom: process.env.EMAIL_FROM,
+  resendApiKey: process.env.RESEND_API_KEY
 }
