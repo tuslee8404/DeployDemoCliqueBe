@@ -46,6 +46,8 @@ class UsersService {
     if (purpose === 'register') {
       const exists = await this.checkEmailExist(email)
       if (exists) return { status: HTTP_STATUS.BAD_REQUEST, message: 'Email đã được sử dụng' }
+      // Cho phép skip gửi email OTP đăng ký
+      return { message: 'OTP bypass: Bạn có thể đăng ký trực tiếp', skipOTP: true }
     } else {
       const exists = await this.checkEmailExist(email)
       if (!exists) return { status: HTTP_STATUS.BAD_REQUEST, message: 'Email chưa được đăng ký' }
@@ -62,8 +64,9 @@ class UsersService {
       return { status: HTTP_STATUS.BAD_REQUEST, message: 'Mật khẩu xác nhận không khớp' }
     }
 
-    const valid = await OTP.verifyOTP(payload.email, payload.otp, 'register')
-    if (!valid) return { status: HTTP_STATUS.BAD_REQUEST, message: 'OTP không hợp lệ hoặc đã hết hạn' }
+    // Bỏ qua bước kiểm tra OTP cho đăng ký theo yêu cầu
+    // const valid = await OTP.verifyOTP(payload.email, payload.otp, 'register')
+    // if (!valid) return { status: HTTP_STATUS.BAD_REQUEST, message: 'OTP không hợp lệ hoặc đã hết hạn' }
 
     const newUser = await User.create({
       email: payload.email,

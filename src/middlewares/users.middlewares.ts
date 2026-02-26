@@ -98,6 +98,16 @@ export const accessTokenValidator = validate(
 export const registerValidation = validate(
   checkSchema(
     {
+      email: {
+        notEmpty: { errorMessage: USERS_MESSAGES.EMAIL_IS_REQUIRED },
+        isEmail: { errorMessage: USERS_MESSAGES.EMAIL_IS_INVALID },
+        trim: true,
+        toLowerCase: true
+      },
+      otp: {
+        optional: true,
+        isString: true
+      },
       name: {
         notEmpty: { errorMessage: 'Tên không được để trống' },
         isString: true,
