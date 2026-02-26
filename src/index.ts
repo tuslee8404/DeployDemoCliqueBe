@@ -14,17 +14,30 @@ dotenv.config()
 const app = express()
 const PORT = process.env.PORT || 4000
 
+const allowedOrigins = [
+  'http://localhost:8080',
+  'https://deploydemocliquefe1.vercel.app',
+  'https://deploydemocliquefe1-git-main-tuslee8404s-projects.vercel.app'
+]
+
 // ─── Middlewares ───────────────────────────────────────────────
 app.use(
   cors({
-    // ✅ phải đặt TRÊN CÙNG
-    origin: ['http://localhost:8080', 'https://deploydemocliquefe1.vercel.app'],
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true)
+      } else {
+        console.warn(`Blocked by CORS: ${origin}`)
+        callback(new Error('Not allowed by CORS'))
+      }
+    },
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
+    credentials: true,
+    preflightContinue: false,
+    optionsSuccessStatus: 204
   })
 )
-app.options('*', cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())

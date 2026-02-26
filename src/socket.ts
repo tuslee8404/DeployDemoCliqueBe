@@ -9,7 +9,7 @@ const userSocketMap = new Map<string, string>()
 export const initSocket = (server: http.Server) => {
   io = new SocketIOServer(server, {
     cors: {
-      origin: 'http://localhost:8080', // Domain Frontend
+      origin: ['http://localhost:8080', 'https://deploydemocliquefe1.vercel.app'], // Domain Frontend
       methods: ['GET', 'POST']
     }
   })
