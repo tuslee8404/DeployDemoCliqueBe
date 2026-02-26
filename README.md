@@ -67,8 +67,6 @@ Trước khi đề xuất khung giờ chung, hệ thống thực hiện kiểm t
 
 Nếu có thêm thời gian, hệ thống sẽ được nâng cấp các tính năng sau:
 
-- **Chat Realtime**: Tích hợp nhắn tin trực tiếp sau khi Match thành công.
 - **Advanced Filtering**: Lọc người dùng theo vị trí địa lý (Geo-spatial query), sở thích và mục tiêu hẹn hò.
 - **Recommendation Engine**: Sử dụng AI/ML để gợi ý những người có độ tương đồng cao thay vì hiển thị danh sách ngẫu nhiên.
-- **Video Call**: Tích hợp WebRTC để cho phép người dùng gặp mặt trực tuyến trước khi quyết định hẹn hò thực tế.
 - **Enhanced Security**: Cài đặt Rate Limiting, tối ưu hóa logic OTP và mã hóa dữ liệu nhạy cảm cấp độ cao hơn.
