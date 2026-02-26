@@ -9,7 +9,7 @@ export const sendOTPEmail = async (email: string, otp: string, purpose: 'registe
   const title = purpose === 'register' ? 'Xác nhận đăng ký' : 'Đặt lại mật khẩu'
 
   try {
-    const { data, error } = await resend.emails.send({
+    await resend.emails.send({
       from: 'onboarding@resend.dev',
       to: email,
       subject: subject,
@@ -56,15 +56,9 @@ export const sendOTPEmail = async (email: string, otp: string, purpose: 'registe
         </div>
       `
     })
-
-    if (error) {
-      console.error('❌ Resend API Error:', error)
-      throw new Error(`Resend failed: ${error.message}`)
-    }
-
-    console.log('✅ Email sent via Resend:', data)
+    //console.log('✅ Email sent via Resend to:', email)
   } catch (error) {
-    console.error('❌ Resend email service error:', error)
-    throw error
+    console.error('❌ Resend email send error:', error)
+    throw new Error('Failed to send OTP email')
   }
 }
