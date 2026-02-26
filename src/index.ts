@@ -22,23 +22,20 @@ const allowedOrigins = [
 
 // ─── Middlewares ───────────────────────────────────────────────
 
-app.use((req, res, next) => {
-  const origin = req.headers.origin
-  if (origin && allowedOrigins.includes(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin)
-  }
-  res.setHeader('Access-Control-Allow-Credentials', 'true')
-  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true
+  })
+)
 
-  // Trả về 200 ngay cho preflight OPTIONS
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(200)
-  }
-  next()
-})
-
-app.use(cors({ origin: allowedOrigins, credentials: true }))
+app.options(
+  '*',
+  cors({
+    origin: allowedOrigins,
+    credentials: true
+  })
+)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
