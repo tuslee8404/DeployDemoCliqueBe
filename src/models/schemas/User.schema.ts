@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema, Model } from 'mongoose'
+import { UserRole } from '~/constants/enum'
 
 export interface IUser extends Document {
   // Auth
@@ -19,6 +20,7 @@ export interface IUser extends Document {
   likedBy: mongoose.Types.ObjectId[]
   matches: mongoose.Types.ObjectId[]
   seenPosts: mongoose.Types.ObjectId[] // ✅ Lưu các bài đã lướt qua để loại khỏi feed
+  role: UserRole
 
   createdAt: Date
   updatedAt: Date
@@ -50,7 +52,12 @@ const UserSchema: Schema<IUser> = new Schema(
     likes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     likedBy: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     matches: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-    seenPosts: [{ type: Schema.Types.ObjectId, ref: 'Post' }] // ✅ Chứa ID của Post
+    seenPosts: [{ type: Schema.Types.ObjectId, ref: 'Post' }], // ✅ Chứa ID của Post
+    role: {
+      type: String,
+      enum: Object.values(UserRole),
+      default: UserRole.User
+    }
   },
   { timestamps: true }
 )

@@ -4,6 +4,7 @@ import { ErrorWithStatus } from '~/models/Errors'
 import HTTP_STATUS from '~/constants/httpStatus'
 import { USERS_MESSAGES } from '~/constants/messages'
 import User from '~/models/schemas/User.schema'
+import { UserRole } from '~/constants/enum'
 
 /**
  * Middleware factory for role-based authorization.

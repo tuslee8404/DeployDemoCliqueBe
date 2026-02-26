@@ -15,3 +15,13 @@ export enum MediaType {
   Image,
   Video
 }
+
+export enum UserRole {
+  Admin = 'admin',
+  Staff = 'staff',
+  User = 'user',
+  Registered = 'registered',
+  Paid = 'paid',
+  Free = 'free',
+  Instructor = 'instructor'
+}
